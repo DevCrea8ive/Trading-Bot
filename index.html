@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Trading Bot Dashboard</title>
+</head>
+<body>
+  <h1>Trading Bot Control Panel</h1>
+
+  <button onclick="startBot()">Start Bot</button>
+  <button onclick="stopBot()">Stop Bot</button>
+  <button onclick="checkStatus()">Check Status</button>
+
+  <p id="status"></p>
+
+  <script>
+    async function startBot() {
+      await fetch('/start');
+      alert('Bot Started');
+    }
+
+    async function stopBot() {
+      await fetch('/stop');
+      alert('Bot Stopped');
+    }
+
+    async function checkStatus() {
+      const res = await fetch('/status');
+      const data = await res.json();
+      document.getElementById('status').innerText = 
+        "Running: " + data.running;
+    }
+  </script>
+</body>
+</html>
