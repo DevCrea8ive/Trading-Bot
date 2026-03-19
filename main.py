@@ -1,24 +1,41 @@
 from fastapi import FastAPI
+import threading
+import time
 
 app = FastAPI()
 
 bot_running = False
 
+# === YOUR BOT LOOP ===
+def bot_loop():
+    global bot_running
+    while bot_running:
+        print("Bot running...")
+
+        # 👉 Here you will later plug ICT strategy + trading logic
+
+        time.sleep(60)
+
+# === ROUTES ===
+
 @app.get("/")
 def home():
-    return {"message": "Trading Bot API Running"}
+    return {"status": "running"}
 
 @app.get("/start")
-def start():
+def start_bot():
     global bot_running
-    bot_running = True
-    return {"status": "started"}
+    if not bot_running:
+        bot_running = True
+        thread = threading.Thread(target=bot_loop)
+        thread.start()
+    return {"message": "Bot started"}
 
 @app.get("/stop")
-def stop():
+def stop_bot():
     global bot_running
     bot_running = False
-    return {"status": "stopped"}
+    return {"message": "Bot stopped"}
 
 @app.get("/status")
 def status():
